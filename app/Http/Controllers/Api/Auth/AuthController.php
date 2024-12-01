@@ -141,7 +141,14 @@ class AuthController extends Controller
     public function resetPassword(ResetPasswordRequest $request)
     {
         $response = $this->authRepository->resetPassword($request->all());
-
+     if ($response['status'] == false) {
+            return response()->jsonResponse(
+                false,
+                $response['message'],
+                null,
+                400
+            );
+        }
         return response()->jsonResponse(
             true,
             $response['message'],
