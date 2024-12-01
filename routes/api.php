@@ -26,3 +26,7 @@ Route::get('getPaths', function () {
     return response()->json([]);
 
 });
+Route::get('getCoursesPath/{id?}', function () {
+    return response()->json([]);
+
+});
