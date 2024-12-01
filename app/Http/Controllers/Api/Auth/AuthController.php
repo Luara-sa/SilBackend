@@ -121,7 +121,7 @@ class AuthController extends Controller
         }
     }
 
-    public function verifyResetCode(ResetPasswordRequest $request)
+    public function verifyResetCode(Request $request)
     {
         $response = $this->authRepository->verifyResetCode($request->all());
 
@@ -136,6 +136,19 @@ class AuthController extends Controller
 
     }
 
+    // reset password
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        $response = $this->authRepository->resetPassword($request->all());
+
+        return response()->jsonResponse(
+            true,
+            $response['message'],
+            null,
+            200
+        );
+    }
 
 
 }

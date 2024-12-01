@@ -94,19 +94,14 @@ class AuthRepository implements AuthRepositoryInterface
 
     public function resetPassword(array $credentials){
         // Reset the user's password
-        $status = Password::reset(
-            $credentials,
-            function ($user, $password) {
-                $user->password = Hash::make($password);
-                $user->save();
-            }
-        );
-
-        if ($status === Password::PASSWORD_RESET) {
-            return [
-                'message' => __('messages.password_reset_successful')
-            ];
-        }
+       $user = User::where('email', $credentials['email'])->first();
+       if (!$user){
+              return [
+                'message' => __('messages.password_reset_error')
+              ];
+       }
+         $user->password = Hash::make($credentials['password']);
+            $user->save();
 
         return [
             'message' => __('messages.password_reset_error')
@@ -145,10 +140,6 @@ class AuthRepository implements AuthRepositoryInterface
             );
         }
 
-        // Update the user's password
-        $user = User::where('email', $data['email'])->first();
-        $user->password = Hash::make($data['password']);
-        $user->save();
 
         // Delete the reset code
         DB::table('password_reset_codes')->where('email', $data['email'])->delete();
@@ -156,7 +147,7 @@ class AuthRepository implements AuthRepositoryInterface
 
         return [
             'status' => true,
-            'message' => __('messages.password_reset_successful'),
+            'message' => __('messages.code_verified'),
         ];
     }
 }
