@@ -30,3 +30,8 @@ Route::get('getCoursesPath/{id?}', function () {
     return response()->json([]);
 
 });
+
+Route::get('getCourseById/{id?}', function () {
+    return response()->json([]);
+
+});
