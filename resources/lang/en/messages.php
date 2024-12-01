@@ -19,5 +19,5 @@ return [
     'reset_code_body' => 'Your password reset code is :code.',
     'invalid_reset_code' => 'Invalid reset code.',
     'password_reset_success' => 'Password reset successfully.',
-    'code_verified' => 'Code verified successfully.
+    'code_verified' => 'Code verified successfully.'
 ];
