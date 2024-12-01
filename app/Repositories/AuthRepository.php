@@ -98,4 +98,23 @@ class AuthRepository implements AuthRepositoryInterface
             'message' => __('messages.password_reset_error')
         ];
     }
+
+
+    public function findOrCreateSocialUser($socialUser, $provider)
+    {
+        $user = User::where('email', $socialUser->getEmail())->first();
+
+        if (!$user) {
+            $user = User::create([
+                'name' => $socialUser->getName(),
+                'email' => $socialUser->getEmail(),
+                'password' => Hash::make(uniqid()), // Set a random password
+                'provider' => $provider,
+                'provider_id' => $socialUser->getId(),
+            ]);
+        }
+
+        return $user;
+    }
+
 }

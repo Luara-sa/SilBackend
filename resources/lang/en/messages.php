@@ -11,4 +11,6 @@ return [
     'password_reset_link' => 'Password reset link sent to your email',
     'password_reset_error' => 'An error occurred while resetting password',
     'password_reset_successful' => 'Password reset successful',
+    'social_login_success' => 'Login successful via :provider.',
+    'social_login_failed' => 'Failed to login via :provider.',
 ];

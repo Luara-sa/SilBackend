@@ -10,6 +10,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Repositories\AuthRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -82,5 +83,38 @@ class AuthController extends Controller
             null,
             200
         );
+    }
+
+
+    // Redirect to Social Provider
+    public function redirectToProvider($provider)
+    {
+        return Socialite::driver($provider)->stateless()->redirect();
+    }
+
+    // Handle Provider Callback
+    public function handleProviderCallback($provider)
+    {
+        try {
+            $socialUser = Socialite::driver($provider)->stateless()->user();
+
+            $user = $this->authRepository->findOrCreateSocialUser($socialUser, $provider);
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->jsonResponse(
+                true,
+                __('auth.social_login_success'),
+                ['user' => $user, 'token' => $token],
+                200
+            );
+        } catch (\Exception $e) {
+            return response()->jsonResponse(
+                false,
+                __('auth.social_login_failed'),
+                ['error' => $e->getMessage()],
+                500
+            );
+        }
     }
 }
