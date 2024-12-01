@@ -31,7 +31,7 @@ Route::get('getCoursesPath/{id?}', function () {
 
 });
 
-Route::get('', function () {
+Route::get('/', function () {
     return response()->json([]);
 
 });
