@@ -12,4 +12,7 @@ return [
     'phone_number_required' => 'The phone number field is required.',
     'gender_required' => 'The gender field is required.',
     'gender_invalid' => 'The gender must be either "M" for Male or "F" for Female.',
+    'code.required' => 'Code is required.',
+    'code.numeric' => 'Code must be a number.',
+    'code.digits' => 'Code must be 6 digits.',
 ];

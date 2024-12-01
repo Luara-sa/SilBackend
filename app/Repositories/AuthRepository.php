@@ -4,6 +4,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
@@ -58,19 +59,32 @@ class AuthRepository implements AuthRepositoryInterface
     /**
      * Handle forgot password functionality.
      */
-    public function forgotPassword(string $email)
+    public function forgotPassword(array $data)
     {
-        // Send a password reset link to the provided email address
-        $status = Password::sendResetLink(['email' => $email]);
+        $user = User::where('email', $data['email'])->first();
 
-        if ($status === Password::RESET_LINK_SENT) {
+        if (!$user) {
             return [
-                'message' => __('messages.password_reset_link')
+                'status' => false,
+                'message' => __('messages.email_not_found'),
             ];
         }
 
+        // Generate a unique code
+        $code = rand(100000, 999999);
+
+        // Store the code in the database
+        \DB::table('password_reset_codes')->updateOrInsert(
+            ['email' => $user->email],
+            ['code' => $code, 'created_at' => now()]
+        );
+
+        // Send the code via email
+        \Mail::to($user->email)->send(new \App\Mail\PasswordResetCode($code));
+
         return [
-            'message' => __('messages.password_reset_error')
+            'status' => true,
+            'message' => __('messages.reset_code_sent'),
         ];
     }
 
@@ -117,4 +131,32 @@ class AuthRepository implements AuthRepositoryInterface
         return $user;
     }
 
+    public function verifyResetCode(array $data)
+    {
+
+        $resetRecord = DB::table('password_reset_codes')->where('email', $data['email'])->first();
+
+        if (!$resetRecord || $resetRecord->code != $data['code']) {
+            return response()->jsonResponse(
+                false,
+                __('messages.invalid_reset_code'),
+                null,
+                400
+            );
+        }
+
+        // Update the user's password
+        $user = User::where('email', $data['email'])->first();
+        $user->password = Hash::make($data['password']);
+        $user->save();
+
+        // Delete the reset code
+        DB::table('password_reset_codes')->where('email', $data['email'])->delete();
+
+
+        return [
+            'status' => true,
+            'message' => __('messages.password_reset_successful'),
+        ];
+    }
 }

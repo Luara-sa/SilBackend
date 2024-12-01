@@ -13,4 +13,8 @@ return [
     'not_found' => 'المورد غير موجود',
     'too_many_requests' => 'طلبات كثيرة جدًا',
     'method_not_allowed' => 'الطريقة غير مسموح بها',
+    'user_registered' => 'تم تسجيل المستخدم بنجاح',
+    'code.required' => 'الرمز مطلوب.',
+    'code.numeric' => 'يجب أن يكون الرمز رقماً.',
+    'code.digits' => 'يجب أن يتكون الرمز من 6 أرقام.',
 ];

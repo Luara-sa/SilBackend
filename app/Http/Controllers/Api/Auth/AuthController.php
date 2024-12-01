@@ -7,8 +7,11 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\ResetPassword;
+use App\Http\Requests\ResetPasswordRequest;
 use App\Repositories\AuthRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -117,4 +120,22 @@ class AuthController extends Controller
             );
         }
     }
+
+    public function verifyResetCode(ResetPasswordRequest $request)
+    {
+        $response = $this->authRepository->verifyResetCode($request->all());
+
+        return response()->jsonResponse(
+            true,
+            $response['message'],
+            null,
+            200
+        );
+
+
+
+    }
+
+
+
 }

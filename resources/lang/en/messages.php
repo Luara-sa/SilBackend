@@ -13,4 +13,10 @@ return [
     'password_reset_successful' => 'Password reset successful',
     'social_login_success' => 'Login successful via :provider.',
     'social_login_failed' => 'Failed to login via :provider.',
+    'email_not_found' => 'Email address not found.',
+    'reset_code_sent' => 'Password reset code sent to your email.',
+    'reset_code_subject' => 'Your Password Reset Code',
+    'reset_code_body' => 'Your password reset code is :code.',
+    'invalid_reset_code' => 'Invalid reset code.',
+    'password_reset_success' => 'Password reset successfully.',
 ];
