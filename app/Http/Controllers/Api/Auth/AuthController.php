@@ -124,7 +124,14 @@ class AuthController extends Controller
     public function verifyResetCode(Request $request)
     {
         $response = $this->authRepository->verifyResetCode($request->all());
-
+ if ($response['status'] == false) {
+            return response()->jsonResponse(
+                false,
+                $response['message'],
+                null,
+                400
+            );
+        }
         return response()->jsonResponse(
             true,
             $response['message'],
