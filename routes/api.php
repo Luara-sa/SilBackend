@@ -18,3 +18,8 @@ Route::middleware(['api'])->prefix('auth-client')->group(function () {
 
 });
 
+Route::get('getCourses', function () {
+    return response()->json([]);
+
+});
+
