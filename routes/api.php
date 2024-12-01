@@ -12,8 +12,8 @@ Route::middleware(['api'])->prefix('auth-client')->group(function () {
     Route::post('password/reset', [AuthController::class, 'resetPassword'])->name('password.reset');
     Route::get('{provider}/redirect', [AuthController::class, 'redirectToProvider']);
     Route::get('{provider}/callback', [AuthController::class, 'handleProviderCallback']);
+    Route::post('social-login/{provider}', [AuthController::class, 'handleSocialAuth']);
     Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
-    Route::get('sendEmail', [AuthController::class, 'sendEmail'])->name('testmail');
 
 
 });

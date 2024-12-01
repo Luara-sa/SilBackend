@@ -13,25 +13,44 @@ class AuthRepository implements AuthRepositoryInterface
 {
     public function register(array $data)
     {
+        // Hash the password before storing it
         $data['password'] = Hash::make($data['password']);
 
-        $user= User::create($data);
+        // Create the user
+        $user = User::create($data);
+
+        // Generate a token for the user
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        // Update the FCM token in the corresponding token record if provided
+        if (!empty($data['fcm_token'])) {
+            $user->tokens()->latest('id')->first()->update(['fcm_token' => $data['fcm_token']]);
+        }
+
         return [
             'user' => $user,
-            'token' => $user->createToken('auth_token')->plainTextToken
+            'token' => $token,
         ];
     }
 
+
     public function login(array $credentials)
     {
+        // Attempt to authenticate with the provided credentials
         if (!Auth::attempt($credentials)) {
             return false;
         }
+
         // Get authenticated user
         $user = Auth::user();
 
         // Generate token
         $token = $user->createToken('auth_token')->plainTextToken;
+
+        // If FCM token is provided, update it in the corresponding token record
+        if (!empty($credentials['fcm_token'])) {
+            $user->tokens()->latest('id')->first()->update(['fcm_token' => $credentials['fcm_token']]);
+        }
 
         return [
             'user' => $user,

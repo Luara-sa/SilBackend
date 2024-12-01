@@ -24,6 +24,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => 'required|string|email',
             'password' => 'required|string',
+            'fcm_token' => 'sometimes|string',
         ];
     }
 
@@ -33,6 +34,9 @@ class LoginRequest extends FormRequest
             'email.required' => __('validation.email_required'),
             'email.email' => __('validation.email_invalid'),
             'password.required' => __('validation.password_required'),
+            'password.string' => __('validation.password_string'),
+            'fcm_token.string' => __('validation.fcm_token_string'),
+
         ];
     }
 }

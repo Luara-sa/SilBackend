@@ -89,7 +89,7 @@ class AuthController extends Controller
     }
 
 
-    // Redirect to Social Provider
+//     Redirect to Social Provider
     public function redirectToProvider($provider)
     {
         return Socialite::driver($provider)->stateless()->redirect();
@@ -120,6 +120,38 @@ class AuthController extends Controller
             );
         }
     }
+
+    public function handleSocialAuth(Request $request, $provider)
+    {
+        $request->validate([
+            'access_token' => 'required|string',
+        ]);
+
+        try {
+            // Use the access token to fetch user details
+            $socialUser = Socialite::driver($provider)->stateless()->userFromToken($request->access_token);
+
+            $user = $this->authRepository->findOrCreateSocialUser($socialUser, $provider);
+
+            // Create a personal access token for the user
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->jsonResponse(
+                true,
+                __('auth.social_login_success'),
+                ['user' => $user, 'token' => $token],
+                200
+            );
+        } catch (\Exception $e) {
+            return response()->jsonResponse(
+                false,
+                __('auth.social_login_failed'),
+                ['error' => $e->getMessage()],
+                500
+            );
+        }
+    }
+
 
     public function verifyResetCode(Request $request)
     {

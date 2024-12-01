@@ -27,6 +27,7 @@ class RegisterRequest extends FormRequest
             'phone_number' => 'required|string',
             'gender' => 'required|string|in:M,F',
             'password' => 'required|string|min:8|confirmed', // Add 'confirmed' rule
+            'fcm_token' => 'sometimes|string',
 
         ];
     }
@@ -44,6 +45,7 @@ class RegisterRequest extends FormRequest
             'password.required' => __('validation.password_required'),
             'password.min' => __('validation.password_min'),
             'password.confirmed' => __('validation.password_confirmed'), // Add confirmation message
+            'fcm_token.string' => 'FCM token must be a string',
         ];
     }
 }
