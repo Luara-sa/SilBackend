@@ -132,12 +132,12 @@ class AuthRepository implements AuthRepositoryInterface
         $resetRecord = DB::table('password_reset_codes')->where('email', $data['email'])->first();
 
         if (!$resetRecord || $resetRecord->code != $data['code']) {
-            return response()->jsonResponse(
-                false,
-                __('messages.invalid_reset_code'),
-                null,
-                400
-            );
+            return [
+                'status' => false,
+                'message' => __('messages.invalid_reset_code'),
+
+            ];
+
         }
 
 
