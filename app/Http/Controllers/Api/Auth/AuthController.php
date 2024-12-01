@@ -78,7 +78,7 @@ class AuthController extends Controller
      */
     public function forgotPassword(Request $request)
     {
-        $response = $this->authRepository->forgotPassword($request->email);
+        $response = $this->authRepository->forgotPassword($request->all());
 
         return response()->jsonResponse(
             true,
