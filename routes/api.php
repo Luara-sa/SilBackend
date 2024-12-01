@@ -22,4 +22,7 @@ Route::get('getCourses', function () {
     return response()->json([]);
 
 });
+Route::get('getPaths', function () {
+    return response()->json([]);
 
+});
