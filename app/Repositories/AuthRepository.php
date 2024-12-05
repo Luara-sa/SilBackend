@@ -123,7 +123,7 @@ class AuthRepository implements AuthRepositoryInterface
             $user->save();
 
         return [
-            'message' => __('messages.password_reset_error')
+            'message' => __('messages.password_reset_success')
         ];
     }
 
