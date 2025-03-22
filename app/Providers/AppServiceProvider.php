@@ -4,13 +4,23 @@ namespace App\Providers;
 
 use App\Exceptions\handler;
 use App\Repositories\AuthRepository;
-use App\Repositories\AuthRepositoryInterface;
+use App\Repositories\BaseRepository;
+use App\Repositories\CourseCategoryRepository;
+use App\Repositories\CourseRepository;
+use App\Repositories\CourseTypeRepository;
+use App\Repositories\GenderCategoryRepository;
+use App\Repositories\Interfaces\AuthRepositoryInterface;
+use App\Repositories\Interfaces\BaseRepositoryInterface;
+use App\Repositories\Interfaces\CourseCategoryRepositoryInterface;
+use App\Repositories\Interfaces\CourseRepositoryInterface;
+use App\Repositories\Interfaces\CourseTypeRepositoryInterface;
+use App\Repositories\Interfaces\GenderCategoryRepositoryInterface;
+use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
-use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,7 +31,10 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(AuthRepositoryInterface::class, AuthRepository::class);
         $this->app->singleton(ExceptionHandlerContract::class, Handler::class);
-
+        $this->app->bind(BaseRepositoryInterface::class, BaseRepository::class);
+        $this->app->bind(CourseRepositoryInterface::class, CourseRepository::class);
+        $this->app->bind(CourseTypeRepositoryInterface::class, CourseTypeRepository::class);
+        $this->app->bind(CourseCategoryRepositoryInterface::class, CourseCategoryRepository::class);
     }
 
     /**

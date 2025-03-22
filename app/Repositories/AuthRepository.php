@@ -4,10 +4,10 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use App\Repositories\Interfaces\AuthRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Password;
 
 class AuthRepository implements AuthRepositoryInterface
 {
@@ -42,7 +42,7 @@ class AuthRepository implements AuthRepositoryInterface
         }
 
         // Get authenticated user
-        $user = Auth::user();
+            $user = Auth::user();
 
         // Generate token
         $token = $user->createToken('auth_token')->plainTextToken;

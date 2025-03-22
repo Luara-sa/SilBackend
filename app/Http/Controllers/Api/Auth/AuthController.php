@@ -9,10 +9,8 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ResetPassword;
 use App\Http\Requests\ResetPasswordRequest;
-use App\Repositories\AuthRepositoryInterface;
+use App\Repositories\Interfaces\AuthRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller

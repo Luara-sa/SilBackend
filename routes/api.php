@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Course\CourseController;
+use App\Http\Controllers\Api\CourseCategory\CourseCategoryController;
+use App\Http\Controllers\Api\CourseType\CourseTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +19,12 @@ Route::middleware(['api'])->prefix('auth-client')->group(function () {
     Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 
+});
+
+Route::middleware(['api'])->prefix('admin')->group(function () {
+   Route::resource('course-types', CourseTypeController::class);
+   Route::resource('course-categories', CourseCategoryController::class);
+   Route::resource('courses', CourseController::class);
 });
 
 
