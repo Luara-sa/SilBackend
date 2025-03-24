@@ -24,10 +24,13 @@ class Course extends JsonResource
             'has_sections' => $this->has_sections,
             'course_type' => new CourseType($this->type),
             'course_category' => new CourseCategory($this->category),
+            'gender' => $this->gender,
+            'price' => $this->price,
             'is_organizational' => $this->is_organizational,
             'course_mode' => $this->course_mode,
             'course_format' => $this->course_format,
             'payment_required' => $this->payment_required,
+            'url' => $this->files->first() ? asset('storage/'.$this->files->first()->path) : '',
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

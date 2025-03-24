@@ -24,6 +24,7 @@ class CourseCategoryRequest extends FormRequest
         return [
             'name' => 'required',
             'name.*' => 'required|string',
+            'color' => 'required|string'
         ];
     }
 }

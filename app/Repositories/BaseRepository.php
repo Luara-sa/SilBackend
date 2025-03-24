@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 use App\Repositories\Interfaces\BaseRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 abstract class BaseRepository implements BaseRepositoryInterface {
     protected Model $model;
@@ -27,13 +28,24 @@ abstract class BaseRepository implements BaseRepositoryInterface {
 
 
     public function store(array $data) {
-        return $this->model->store($data);
+        $model= $this->model->create($data);
+        // if request has file
+        if (request()->hasFile('image')) {
+            Storage::uploadFile(request()->file('image'), $model);
+        }
+
+        return $model;
     }
 
     public function update($id, array $data) {
         $model = $this->find($id);
         if ($model) {
             $model->update($data);
+            // if request has file
+            if (request()->hasFile('image')) {
+                Storage::uploadFile(request()->file('image'), $model);
+            }
+
             return $model;
         }
         return null;

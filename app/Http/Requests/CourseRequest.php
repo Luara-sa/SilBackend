@@ -28,7 +28,8 @@ class CourseRequest extends FormRequest
             'description.*' => 'required|string', // Add 'description.*' rule
             'start_date' => 'required|date',
             'end_date' => 'required|date',
-            'status' => 'required|in:Active,Inactive',
+            'is_active' => 'sometimes|boolean',
+            'price' => 'required|numeric',
             'type_id' => 'required|exists:course_types,id',
             'has_sections' => 'required|boolean',
             'gender' => 'required',

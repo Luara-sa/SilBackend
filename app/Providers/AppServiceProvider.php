@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Exceptions\handler;
+use App\Models\File;
 use App\Repositories\AuthRepository;
 use App\Repositories\BaseRepository;
 use App\Repositories\CourseCategoryRepository;
@@ -16,9 +17,12 @@ use App\Repositories\Interfaces\CourseRepositoryInterface;
 use App\Repositories\Interfaces\CourseTypeRepositoryInterface;
 use App\Repositories\Interfaces\GenderCategoryRepositoryInterface;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
 
@@ -53,5 +57,37 @@ class AppServiceProvider extends ServiceProvider
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         App::setLocale(request()->header('Accept-Language', 'en'));
 
+        // macro for upload file
+
+        Storage::macro('uploadFile', function ($files, $model,) {
+            $files = is_array($files) ? $files : [$files];
+
+
+            $urls = [];
+            foreach ($files as $file) {
+                if (is_object($file)) {
+                    $size = $file->getSize();
+                    $extension = $file->getClientOriginalExtension();
+                    $type = $file->getClientMimeType();
+                    $name = Str::random(20) . time() . Str::random(20) . "." . $extension;
+                    $folder_path = Carbon::now()->format('Y-m-d');
+                    $url = $file->store($folder_path, 'upload_driver');
+
+                    $model->files()->create([
+                        'name' => $name,
+                        'path' => $url,
+                        'size' => $size,
+                        'type' => $type,
+                        'extension' => $extension,
+
+                    ]);
+
+                }
+            }
+        });
+
     }
+
+
+
 }
