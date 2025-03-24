@@ -30,6 +30,7 @@ class Course extends JsonResource
             'course_mode' => $this->course_mode,
             'course_format' => $this->course_format,
             'payment_required' => $this->payment_required,
+            'rating' =>'4.5',
             'url' => $this->files->first() ? asset('storage/'.$this->files->first()->path) : '',
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
