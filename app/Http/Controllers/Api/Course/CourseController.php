@@ -43,7 +43,7 @@ class CourseController extends Controller
         return response()->jsonResponse(
             true,
             __('messages.data_retrieved'),
-            $course,
+            new Course($course),
             200
         );
     }
